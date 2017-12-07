@@ -30,7 +30,7 @@ exports.addUser = (data) => {
     newuser.recommender = data.recommender;
     newuser.save((err,ret)=>{
       if(err) return reject(err);
-      resolve();
+      resolve(ret);
     })
   });
 }
