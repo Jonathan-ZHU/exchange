@@ -57,7 +57,7 @@ exports.send = (qu,mobi,code) => {
 exports.congratulations = (mobi) => {
   return new Promise( (resolve, reject)=>{
     var phone = "86" + mobi.toString()
-    var msg="【派德麟】恭喜您9158交易所注册用户，我们将于12月12日开启认购和钱包下载，客服微信exchange9158";
+    var msg="【派德麟】恭喜您成为9158交易所注册用户，我们将于12月12日开启认购和钱包下载，客服微信exchange9158";
     function post(uri,content,host){
         var options = {
             hostname: host,
