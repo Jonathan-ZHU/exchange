@@ -11,6 +11,7 @@ app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
     res.header("X-Powered-By",' 3.2.1')
     res.header("Content-Type", "application/json;charset=utf-8");
+    res.header("Content-Type", "text/html;charset=utf-8");
     next();
 });
 
@@ -19,7 +20,11 @@ app.use(bodyParser.json())
 /*
 获取验证码
 CURL:
-curl http://127.0.0.1:8000/v1/getcode \
+curl http://120.92.92.77:8332/v1/getcode \
+-H "Content-Type: application/json" \
+-X POST -d '{"prefix":"86","mobile":"15061519070"}'
+
+curl http://127.0.0.1:8332/v1/getcode \
 -H "Content-Type: application/json" \
 -X POST -d '{"prefix":"86","mobile":"15061519070"}'
 */
@@ -59,7 +64,7 @@ POST:
   code
 RES:
 CURL:
-curl http://127.0.0.1:8000/v1/newuser \
+curl http://120.92.92.77:8000/v1/newuser \
 -H "Content-Type: application/json" \
 -X POST -d '{"mobile":"15061519070","wechat":"456789","pass":"123465","code":"111111","recommender":"15061519070"}'
 */
@@ -117,8 +122,8 @@ app.post('/v1/login',function(req,res){
 });
 
 
-app.listen(8000);
-console.log("API V1 listening on " + 8000);
+app.listen(8332);
+console.log("API V1 listening on " + 8332);
 
 //抛出app实例给测试脚本用
 exports.app = app
