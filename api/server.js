@@ -1,16 +1,16 @@
 var http = require('http');
 
 // 修改为您的短信账号
-var account="N7573121";
+var account="I4101422";
 // 修改为您的短信密码
-var password="IzQcShBn9r3695";
+var password="ENdn7balhPb541";
 // 修改您要发送的手机号码，多个号码用逗号隔开
 var phone="15061519070";
 // 修改为您要发送的短信内容
 var msg="【253云通讯】您的验证码是123456。如非本人操作，请忽略。";
 // var msg="test";
 // 短请求地址请登录253云通讯自助通平台查看或者询问您的商务负责人获取
-var sms_host = 'http://smssh1.253.com/msg/send/json';
+var sms_host = 'intapi.253.com';
 // 发送短信地址
 var send_sms_uri = '/send/json';
 // 查询余额地址
@@ -48,8 +48,8 @@ function query_blance(uri,content,host){
 
 function post(uri,content,host){
 	var options = {
-        hostname: 'http://smssh1.253.com',
-        path: "/msg/send/json",
+        hostname: host,
+        path: uri,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8',

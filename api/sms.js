@@ -3,22 +3,22 @@ var http = require('http');
 var account="I4101422";
 // 修改为您的短信密码
 var password="ENdn7balhPb541";
-// 修改为您要发送的短信内容
-var msg="【253云通讯】您的验证码是123456。如非本人操作，请忽略。";
 // var msg="test";
 // 短请求地址请登录253云通讯自助通平台查看或者询问您的商务负责人获取
-var sms_host = 'http://intapi.253.com/send/json?';
+var sms_host = 'intapi.253.com';
 // 发送短信地址
-var send_sms_uri = '/msg/send/json';
+var send_sms_uri = '/send/json';
 // 查询余额地址
 var query_balance_uri = '/msg/balance/json';
 
-exports.send = (mobile,code) => {
+exports.send = (qu,mobi,code) => {
   return new Promise( (resolve, reject)=>{
-    var msg="【派德麟】您的验证码是 " + code + " 。如非本人操作，请忽略。";
-    var post = function(uri,content,host){
-      var options = {
+    var phone = qu.toString() + mobi.toString()
+    var msg="【派德麟】您的验证码是" + code + "。如非本人操作，请忽略";
+    function post(uri,content,host){
+        var options = {
             hostname: host,
+            port: 80,
             path: uri,
             method: 'POST',
             headers: {
@@ -26,44 +26,47 @@ exports.send = (mobile,code) => {
             }
         };
         var req = http.request(options, function (res) {
-            console.log('STATUS: ' + res.statusCode);
-
             res.setEncoding('utf8');
             res.on('data', function (chunk) {
-                resolve(chunk)
+                chunk=JSON.parse(chunk)
+                if(chunk.code == 0 ) return resolve()
+                return reject(chunk.error)
             });
         });
+        console.log(content)
         req.write(content);
+
         req.end();
     }
-    var send_sms = function(uri,account,password,phone,msg){
+    function send_sms(uri,account,password,mobile,msg){
+
         var post_data = { // 这是需要提交的数据
         'account': account,
         'password': password,
-        'phone':phone,
+        'mobile':mobile,
         'msg':msg,
-        'report':'false',
         };
         var content =  JSON.stringify(post_data);
         post(uri,content,sms_host);
+
     }
-    send_sms(send_sms_uri,account,password,mobile,msg)
+    send_sms(send_sms_uri,account,password,phone,msg)
   })
 }
 
-this.send("15061519070","111111")
-.then(ret=>console.log(ret))
-.catch(err=>console.log(err))
+// this.send("86","15061519070","5555")
+// .then(ret=>console.log(ret))
+// .catch(err=>console.log(err))
 // query_blance(query_balance_uri,account,password);
 
-
-
-// 查询余额方法
-function query_blance(uri,content,host){
-    var post_data = { // 这是需要提交的数据
-    'account': account,
-    'password': password,
-    };
-    var content = JSON.stringify(post_data);
-    post(uri,content,sms_host);
-}
+//
+//
+// // 查询余额方法
+// function query_blance(uri,content,host){
+//     var post_data = { // 这是需要提交的数据
+//     'account': account,
+//     'password': password,
+//     };
+//     var content = JSON.stringify(post_data);
+//     post(uri,content,sms_host);
+// }
