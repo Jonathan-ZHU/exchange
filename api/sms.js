@@ -54,6 +54,51 @@ exports.send = (qu,mobi,code) => {
   })
 }
 
+exports.congratulations = (mobi) => {
+  return new Promise( (resolve, reject)=>{
+    var phone = "86" + mobi.toString()
+    var msg="【派德麟】恭喜您9158交易所注册用户，我们将于12月12日开启认购和钱包下载，客服微信exchange9158";
+    function post(uri,content,host){
+        var options = {
+            hostname: host,
+            port: 80,
+            path: uri,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            }
+        };
+        var req = http.request(options, function (res) {
+            res.setEncoding('utf8');
+            res.on('data', function (chunk) {
+                chunk=JSON.parse(chunk)
+                if(chunk.code == 0 ) return resolve()
+                return reject(chunk.error)
+            });
+        });
+        console.log(content)
+        req.write(content);
+
+        req.end();
+    }
+    function send_sms(uri,account,password,mobile,msg){
+
+        var post_data = { // 这是需要提交的数据
+        'account': account,
+        'password': password,
+        'mobile':mobile,
+        'msg':msg,
+        };
+        var content =  JSON.stringify(post_data);
+        post(uri,content,sms_host);
+
+    }
+    send_sms(send_sms_uri,account,password,phone,msg)
+  })
+}
+
+// this.congratulations("15652650890").then(ret=>console.log(ret)).catch(err=>console.log(err))
+
 // this.send("86","15061519070","5555")
 // .then(ret=>console.log(ret))
 // .catch(err=>console.log(err))

@@ -89,8 +89,10 @@ app.post('/v1/newuser',function(req,res){
     return db.addUser(data)
   })
   .then( ()=>{
-    return res.send({err:0,msg:'added!'})
+    res.send({err:0,msg:'added!'})
+    return sms.congratulations(data.mobile)
   })
+  .then( ()=>console.log("send!"))
   .catch(err=>{
     console.log(err);
     return res.send({err:-1000,msg:err.toString() })
